@@ -4,6 +4,7 @@
 
 from flask import jsonify, request
 from server.utils.helpers import json_response
+from server.services.ai_service import ai_service
 
 
 def register_api_routes(app, services):
@@ -56,3 +57,27 @@ def register_api_routes(app, services):
         """确认所有报警"""
         alarm_service.acknowledge_all()
         return jsonify(json_response(message='所有报警已确认'))
+
+    @app.route('/api/ai/chat', methods=['POST'])
+    def ai_chat():
+        """AI 对话代理：接收 messages 列表并转发到后端 ai_service，返回模型响应"""
+        payload = request.get_json() or {}
+        messages = payload.get('messages')
+        context = payload.get('context')
+
+        if not messages:
+            return jsonify(json_response(code=400, message='缺少 messages 字段')), 400
+
+        resp = ai_service.chat(messages=messages, context=context)
+        return jsonify(json_response(data=resp))
+
+    @app.route('/api/ai/detect_parking', methods=['POST'])
+    def ai_detect_parking():
+        """AI 违规停车检测：接收 parking_snapshot 并返回检测结果"""
+        payload = request.get_json() or {}
+        snapshot = payload.get('parking_snapshot')
+        if not snapshot:
+            return jsonify(json_response(code=400, message='缺少 parking_snapshot 字段')), 400
+
+        resp = ai_service.detect_illegal_parking(snapshot)
+        return jsonify(json_response(data=resp))

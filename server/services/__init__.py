@@ -17,3 +17,7 @@ __all__ = [
     'init_simulator',
     'VehicleSimulator'
 ]
+
+# 新增 AI 服务导出
+from server.services.ai_service import ai_service, AIService
+__all__.extend(['ai_service', 'AIService'])

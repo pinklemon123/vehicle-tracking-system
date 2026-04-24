@@ -14,6 +14,13 @@ class Config:
     DEBUG = True
     SEND_FILE_MAX_AGE_DEFAULT = 0
     JSON_AS_ASCII = False
+    # Deepseek API 配置（建议通过环境变量设置）
+    # 注意：默认不应在代码中硬编码真实秘钥，优先通过环境变量注入
+    DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY', '')
+    # 使用 DeepSeek 官方 base URL（OpenAI 兼容），具体调用路径将在 ai_service 中拼接
+    DEEPSEEK_API_URL = os.environ.get('DEEPSEEK_API_URL', 'https://api.deepseek.com')
+    # 默认模型，若需要可在环境变量中覆盖
+    DEEPSEEK_MODEL = os.environ.get('DEEPSEEK_MODEL', 'deepseek-v4-flash')
     
 # 地图配置
 MAP_CONFIG = {
