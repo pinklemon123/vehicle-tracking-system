@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>运营总览 - 智慧园区综合管理平台</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.5.4.3.js"></script>
+<style>
+    .sidebar-active { background: #eff6ff; border-right: 4px solid #3b82f6; color: #1d4ed8; }
+    .stat-card { min-height: 80px }
+    .alarm-unack { color: #dc2626 }
+</style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 overflow-auto min-h-screen">
+<!-- 顶部 -->
+<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6">
+  <div class="flex items-center gap-4">
+    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white"><iconify-icon icon="solar:map-point-wave-bold-duotone" class="text-2xl"></iconify-icon></div>
+    <div>
+      <h1 class="font-bold">智慧园区综合管理平台</h1>
+      <div class="text-xs text-slate-400">运营总览</div>
+    </div>
+  </div>
+  <nav class="hidden md:flex items-center gap-2">
+    <a class="px-3 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="index.html">态势感知</a>
+    <a class="px-3 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="parking.html">智慧停车</a>
+    <a class="px-3 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="facilities.html">公共设施</a>
+    <a class="px-3 py-2 rounded-md font-medium text-blue-600 bg-blue-50" href="operator.html">运营总览</a>
+  </nav>
+</header>
+<main class="p-6 grid grid-cols-4 gap-6">
+  <!-- 概要统计 -->
+  <section class="col-span-4 grid grid-cols-4 gap-4">
+    <div class="bg-white rounded-xl p-4 stat-card">
+      <div class="text-xs text-slate-500">实时人数</div>
+      <div class="text-2xl font-bold" id="stat-people">—</div>
+    </div>
+    <div class="bg-white rounded-xl p-4 stat-card">
+      <div class="text-xs text-slate-500">车辆入园</div>
+      <div class="text-2xl font-bold" id="stat-vehicles">—</div>
+    </div>
+    <div class="bg-white rounded-xl p-4 stat-card">
+      <div class="text-xs text-slate-500">当前告警</div>
+      <div class="text-2xl font-bold text-red-600" id="stat-alarms">—</div>
+    </div>
+    <div class="bg-white rounded-xl p-4 stat-card">
+      <div class="text-xs text-slate-500">系统健康</div>
+      <div class="text-2xl font-bold text-green-600" id="stat-health">正常</div>
+    </div>
+  </section>
+
+  <!-- 中部：图表与告警 -->
+  <section class="col-span-3 bg-white rounded-xl p-4">
+    <h3 class="font-bold mb-2">关键指标趋势</h3>
+    <div id="main-charts" class="h-64"></div>
+    <div class="mt-4 grid grid-cols-3 gap-3">
+      <div class="p-3 bg-slate-50 rounded">车位利用率<div id="chart-usage" class="h-24"></div></div>
+      <div class="p-3 bg-slate-50 rounded">人流密度<div id="chart-flow" class="h-24"></div></div>
+      <div class="p-3 bg-slate-50 rounded">能耗<div id="chart-energy" class="h-24"></div></div>
+    </div>
+  </section>
+
+  <!-- 右侧：告警列表与操作 -->
+  <aside class="col-span-1 bg-white rounded-xl p-4 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <h4 class="font-bold">告警列表</h4>
+      <button id="refreshAlarms" class="text-sm text-slate-500">刷新</button>
+    </div>
+    <div id="alarms" class="flex-1 overflow-auto space-y-3"></div>
+    <div class="pt-2 border-t border-slate-100">
+      <button id="ackAll" class="w-full bg-blue-600 text-white py-2 rounded">确认所有告警</button>
+    </div>
+  </aside>
+
+  <!-- 底部控制条 -->
+  <section class="col-span-4 bg-white rounded-xl p-4">
+    <h4 class="font-bold mb-2">运维控制</h4>
+    <div class="flex gap-3">
+      <button id="btnPingAI" class="px-3 py-2 bg-slate-100 rounded">检测 AI 连通</button>
+      <button id="btnSnapshot" class="px-3 py-2 bg-slate-100 rounded">抓取当前停车快照</button>
+      <div id="op-result" class="text-sm text-slate-500 ml-4"></div>
+    </div>
+  </section>
+</main>
+
+<script src="js/pages/operator.js"></script>
+
+</body>
+</html>

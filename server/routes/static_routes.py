@@ -32,7 +32,7 @@ def register_static_routes(app, services):
     @app.route('/operator')
     def operator():
         """运营页面"""
-        return send_from_directory(ROOT_DIR, 'opreater.html')
+        return send_from_directory(ROOT_DIR, 'operator.html')
     
     @app.route('/<path:path>')
     def serve_static(path):

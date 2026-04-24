@@ -78,6 +78,40 @@ def register_api_routes(app, services):
         snapshot = payload.get('parking_snapshot')
         if not snapshot:
             return jsonify(json_response(code=400, message='缺少 parking_snapshot 字段')), 400
-
         resp = ai_service.detect_illegal_parking(snapshot)
-        return jsonify(json_response(data=resp))
+
+        # 如果 AI 返回结构化违规列表，则为每条违规创建报警（去重简单处理）
+        try:
+            data = resp if isinstance(resp, dict) else {}
+            violations = data.get('violations') if isinstance(data.get('violations'), list) else None
+            created = []
+            if violations:
+                for v in violations:
+                    spot = v.get('spot_id') or v.get('spot')
+                    reason = v.get('reason', '疑似违规停车')
+                    confidence = v.get('confidence', None)
+                    message = f"疑似违规停车: {spot} - {reason}"
+                    details = {'confidence': confidence, 'raw': v}
+                    alarm = alarm_service.create({
+                        'type': 'illegal_parking',
+                        'level': 'warning',
+                        'message': message,
+                        'vehicle_id': None,
+                        'vehicle_name': spot,
+                        'details': details
+                    })
+                    created.append(alarm.to_dict())
+
+            return jsonify(json_response(data={'ai': resp, 'created_alarms': created}))
+        except Exception as e:
+            return jsonify(json_response(code=500, message=str(e), data={'ai': resp})), 500
+
+    @app.route('/api/ai/ping', methods=['GET'])
+    def ai_ping():
+        """简单检测 DeepSeek 或 AI 后端连通性（会用一个轻量请求）"""
+        test_prompt = [{'role': 'system', 'content': 'ping'}, {'role': 'user', 'content': 'ping'}]
+        try:
+            r = ai_service.chat(messages=test_prompt)
+            return jsonify(json_response(data={'ok': True, 'response': r}))
+        except Exception as e:
+            return jsonify(json_response(code=500, message=str(e))), 500
