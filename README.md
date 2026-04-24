@@ -85,3 +85,39 @@ vehicle-tracking-system/
 │   └── admin.html        # 后台管理页面
 └── README.md             # 项目说明
 ```
+## vehicle-tracking-system
+
+智慧园区车辆定位与停车管理系统（示例项目）
+
+主要特性
+- 实时车辆模拟与 WebSocket 推送
+- 停车位可视化与反向寻车
+- AI 助手（DeepSeek）用于违规停车检测与交互式问答
+
+快速开始（Windows / PowerShell）
+1. 创建并激活虚拟环境：
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+
+2. 安装依赖：
+   pip install -r requirements.txt
+
+3. 配置环境变量（请申请 DeepSeek API Key 并设置）：
+   # 临时在当前 PowerShell 会话
+   $env:DEEPSEEK_API_KEY = "your_deepseek_api_key_here"
+   # 可选：覆盖默认 model 或 base URL
+   $env:DEEPSEEK_MODEL = "deepseek-v4-flash"
+   $env:DEEPSEEK_API_URL = "https://api.deepseek.com"
+
+4. 启动服务：
+   python -m server.app
+
+5. 在浏览器打开：
+   http://localhost:5000/parking
+
+安全与注意事项
+- 切勿把 API Key 写入前端或公开仓库。请仅在服务端（环境变量或安全配置）使用 Key。
+- 本项目示例使用 DeepSeek（兼容 OpenAI）的 API；请按 DeepSeek 文档配置模型与端点。
+
+贡献
+欢迎提交 issue 或 PR。
