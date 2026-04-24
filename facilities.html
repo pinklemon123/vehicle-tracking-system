@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公共设施检索 - 智慧园区系统</title>
+    
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages/facilities.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="facilities-page">
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo"><i class="fas fa-building"></i></div>
+            <div class="header-title">
+                <h1>智慧园区综合管理平台</h1>
+                <span class="subtitle">Public POI & Services</span>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <a href="index.html"><i class="fas fa-chart-line"></i>态势感知</a>
+            <a href="parking.html"><i class="fas fa-parking"></i>智慧停车</a>
+            <a href="facilities.html" class="active"><i class="fas fa-map-signs"></i>公共设施</a>
+            <a href="operator.html"><i class="fas fa-shield-alt"></i>应急联动</a>
+        </nav>
+        <div class="header-right">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="查找设施..." autocomplete="off">
+            </div>
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主内容区 -->
+    <main class="app-main">
+        <!-- 左侧设施列表 -->
+        <aside class="facilities-sidebar">
+            <div class="category-tabs">
+                <button class="category-btn active" data-category="all"><i class="fas fa-list"></i>全部</button>
+                <button class="category-btn" data-category="toilet"><i class="fas fa-restroom"></i>卫生间</button>
+                <button class="category-btn" data-category="water"><i class="fas fa-water"></i>饮水点</button>
+                <button class="category-btn" data-category="elevator"><i class="fas fa-arrow-up"></i>电梯</button>
+                <button class="category-btn" data-category="medical"><i class="fas fa-hospital"></i>医疗点</button>
+                <button class="category-btn" data-category="bike"><i class="fas fa-bicycle"></i>自行车停放</button>
+            </div>
+            <div class="stats-summary">
+                <div class="stat-item"><span class="stat-label">总设施数</span><span class="stat-value" id="totalCount">0</span></div>
+                <div class="stat-item"><span class="stat-label">正常运营</span><span class="stat-value success" id="normalCount">0</span></div>
+                <div class="stat-item"><span class="stat-label">需要维护</span><span class="stat-value warning" id="maintenanceCount">0</span></div>
+            </div>
+            <div class="facilities-list" id="facilitiesList"></div>
+        </aside>
+        
+        <!-- 右侧图片区域 -->
+        <section class="map-section">
+            <div class="map-toolbar-top">
+                <div class="floor-switcher">
+                    <button class="floor-btn active" data-floor="1">1F</button>
+                    <button class="floor-btn" data-floor="2">2F</button>
+                    <button class="floor-btn" data-floor="3">3F</button>
+                    <button class="floor-btn" data-floor="4">4F</button>
+                    <button class="floor-btn" data-floor="5">5F</button>
+                    <button class="floor-btn" data-floor="B1">B1</button>
+                </div>
+                <div class="map-controls">
+                    <button class="control-btn" onclick="zoomIn()"><i class="fas fa-plus"></i></button>
+                    <button class="control-btn" onclick="zoomOut()"><i class="fas fa-minus"></i></button>
+                    <button class="control-btn" onclick="resetView()"><i class="fas fa-compress"></i></button>
+                </div>
+            </div>
+            
+            <div id="mapContainer" class="image-container">
+                <img id="campusImage" src="assets/images/campus-map.jpg" alt="园区平面图">
+                <div id="markersLayer"></div>
+                <div class="map-hint">
+                    <i class="fas fa-mouse"></i> 左键拖动 · 滚轮缩放 · 右键添加标记
+                </div>
+            </div>
+            
+            <div class="map-legend">
+                <div class="legend-item"><span class="legend-dot toilet"></span>卫生间</div>
+                <div class="legend-item"><span class="legend-dot water"></span>饮水点</div>
+                <div class="legend-item"><span class="legend-dot elevator"></span>电梯</div>
+                <div class="legend-item"><span class="legend-dot medical"></span>医疗点</div>
+                <div class="legend-item"><span class="legend-dot bike"></span>自行车停放</div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 模态框 -->
+    <div id="facilityModal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">设施详情</h3>
+                <button class="modal-close" onclick="closeFacilityModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeFacilityModal()">关闭</button>
+                <button class="btn btn-primary" onclick="navigateToFacility()"><i class="fas fa-route"></i> 导航至此</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/pages/facilities.js"></script>
+</body>
+</html>

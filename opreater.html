@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>智慧园区运营总览 - 2026可视化系统</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.5.4.3.js"></script>
+<style>
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .marker-pulse { animation: pulse-soft 2s infinite; }
+        .map-bg { background-color: #f8fafc; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
+        .sidebar-active { background: #eff6ff; border-right: 4px solid #3b82f6; color: #1d4ed8; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 overflow-hidden h-screen flex flex-col">
+<!-- 顶部导航栏 -->
+<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-50">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
+<iconify-icon class="text-white text-2xl" icon="solar:map-point-wave-bold-duotone"></iconify-icon>
+</div>
+<div>
+<h1 class="font-bold text-lg tracking-tight">智慧园区综合管理平台</h1>
+<p class="text-xs text-slate-400 uppercase tracking-widest">Campus Intelligence V4.0</p>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-1">
+<a class="px-4 py-2 rounded-md font-medium text-blue-600 bg-blue-50" href="index.html">态势感知</a>
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="parking.html">智慧停车</a>
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="facilities.html">公共设施</a>
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="#">应急联动</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block">
+<div class="text-sm font-semibold" id="current-time">2026年04月23日 14:30:45</div>
+<div class="text-xs text-slate-400">星期四 · 晴 24°C</div>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+<div class="relative">
+<iconify-icon class="text-2xl text-slate-400" icon="solar:bell-bing-bold-duotone"></iconify-icon>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white">3</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
+<img alt="Admin Avatar" src="https://modao.cc/agent-py/media/generated_images/2026-04-23/f7253b906e664c95b9bad676154116ea.jpg"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- 左侧菜单 -->
+<aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
+<div class="p-4">
+<div class="relative">
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500" placeholder="搜索区域/设备/人员..." type="text"/>
+<iconify-icon class="absolute left-3 top-2.5 text-slate-400" icon="solar:magnifer-linear"></iconify-icon>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-2">
+<div class="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">实时概览</div>
+<div class="space-y-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg sidebar-active" href="index.html">
+<iconify-icon class="text-xl" icon="solar:widget-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">全域态势中心</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50" href="#">
+<iconify-icon class="text-xl" icon="solar:users-group-rounded-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">人员热力分布</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50" href="#">
+<iconify-icon class="text-xl" icon="solar:cpu-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">IoT设备监控</span>
+<span class="ml-auto bg-green-100 text-green-600 text-[10px] px-1.5 py-0.5 rounded">98%</span>
+</a>
+</div>
+<div class="mt-6 px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">业务场景</div>
+<div class="space-y-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50" href="parking.html">
+<iconify-icon class="text-xl" icon="solar:parking-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">智慧停车寻车</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50" href="facilities.html">
+<iconify-icon class="text-xl" icon="solar:map-point-hospital-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">POI设施检索</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50" href="#">
+<iconify-icon class="text-xl" icon="solar:leaf-bold-duotone"></iconify-icon>
+<span class="text-sm font-medium">能耗环境监测</span>
+</a>
+</div>
+</div>
+<div class="p-4 border-t border-slate-100">
+<div class="bg-blue-600 rounded-xl p-4 text-white">
+<div class="text-xs opacity-80 mb-1">今日运行指数</div>
+<div class="text-2xl font-bold">98.5</div>
+<div class="mt-2 h-1 bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-white w-[98%]"></div>
+</div>
+<p class="mt-2 text-[10px] opacity-70">全园系统运行正常，无重大故障</p>
+</div>
+</div>
+</aside>
+<!-- 地图主区 -->
+<div class="flex-1 relative overflow-hidden map-bg p-6 flex flex-col gap-6">
+<!-- 统计浮窗 -->
+<div class="grid grid-cols-4 gap-4 z-10 shrink-0">
+<div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white shadow-sm">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+<iconify-icon class="text-lg" icon="solar:users-group-two-rounded-bold"></iconify-icon>
+</div>
+<span class="text-sm text-slate-500 font-medium">实时人数</span>
+</div>
+<div class="text-2xl font-bold">12,482 <span class="text-xs text-green-500 font-normal">↑ 12%</span></div>
+</div>
+<div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white shadow-sm">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center">
+<iconify-icon class="text-lg" icon="solar:car-bold"></iconify-icon>
+</div>
+<span class="text-sm text-slate-500 font-medium">车辆入园</span>
+</div>
+<div class="text-2xl font-bold">1,056 <span class="text-xs text-slate-400 font-normal">余 243</span></div>
+</div>
+<div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white shadow-sm">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+<iconify-icon class="text-lg" icon="solar:case-minimalistic-bold"></iconify-icon>
+</div>
+<span class="text-sm text-slate-500 font-medium">告警事件</span>
+</div>
+<div class="text-2xl font-bold text-red-500">03 <span class="text-xs text-slate-400 font-normal font-medium">待处理</span></div>
+</div>
+<div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white shadow-sm">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+<iconify-icon class="text-lg" icon="solar:plug-circle-bold"></iconify-icon>
+</div>
+<span class="text-sm text-slate-500 font-medium">能耗负荷</span>
+</div>
+<div class="text-2xl font-bold">78% <span class="text-xs text-blue-500 font-normal">正常</span></div>
+</div>
+</div>
+<!-- 地图核心 -->
+<div class="flex-1 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden">
+<!-- 地图工具条 -->
+<div class="absolute top-4 left-4 z-20 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white shadow-lg rounded-lg flex items-center justify-center text-slate-600 hover:text-blue-600"><iconify-icon class="text-xl" icon="solar:add-circle-linear"></iconify-icon></button>
+<button class="w-10 h-10 bg-white shadow-lg rounded-lg flex items-center justify-center text-slate-600 hover:text-blue-600"><iconify-icon class="text-xl" icon="solar:minimize-circle-linear"></iconify-icon></button>
+<button class="w-10 h-10 bg-white shadow-lg rounded-lg flex items-center justify-center text-slate-600 hover:text-blue-600"><iconify-icon class="text-xl" icon="solar:map-linear"></iconify-icon></button>
+</div>
+<div class="absolute top-4 right-4 z-20 flex gap-2">
+<div class="bg-white/90 backdrop-blur px-3 py-1.5 rounded-full shadow-lg border border-slate-100 text-xs font-bold flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 marker-pulse"></span>
+                        实时图层渲染已开启
+                    </div>
+</div>
+<!-- 模拟2D矢量地图 -->
+<div class="w-full h-full flex items-center justify-center bg-slate-50 p-10 overflow-auto">
+<div class="relative w-[1200px] h-[800px] bg-slate-200 rounded-[60px] shadow-inner p-1">
+<!-- 道路网 -->
+<div class="absolute inset-0 opacity-10">
+<div class="absolute w-full h-4 bg-white top-1/4"></div>
+<div class="absolute w-full h-4 bg-white top-2/3"></div>
+<div class="absolute h-full w-4 bg-white left-1/3"></div>
+<div class="absolute h-full w-4 bg-white left-2/3"></div>
+</div>
+<!-- 建筑1: 主教学楼/门诊楼 -->
+<div class="absolute top-[10%] left-[10%] w-[35%] h-[40%] bg-white rounded-2xl shadow-md border-b-4 border-slate-300 flex items-center justify-center group cursor-pointer hover:bg-blue-50 transition-colors">
+<div class="text-center">
+<iconify-icon class="text-4xl text-blue-500 mb-2" icon="solar:buildings-bold-duotone"></iconify-icon>
+<p class="text-sm font-bold text-slate-700 uppercase">综合服务主楼</p>
+<p class="text-[10px] text-slate-400 mt-1">人流密度: 65%</p>
+</div>
+</div>
+<!-- 建筑2: 图书馆/医技楼 -->
+<div class="absolute top-[10%] right-[10%] w-[25%] h-[25%] bg-white rounded-2xl shadow-md border-b-4 border-slate-300 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-colors">
+<div class="text-center">
+<iconify-icon class="text-3xl text-orange-500 mb-2" icon="solar:book-bookmark-bold-duotone"></iconify-icon>
+<p class="text-sm font-bold text-slate-700 uppercase">学术资源馆</p>
+</div>
+</div>
+<!-- 建筑3: 体育馆/行政楼 -->
+<div class="absolute bottom-[15%] left-[15%] w-[30%] h-[20%] bg-white rounded-2xl shadow-md border-b-4 border-slate-300 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-colors">
+<div class="text-center">
+<iconify-icon class="text-3xl text-green-500 mb-2" icon="solar:dumbbell-large-bold-duotone"></iconify-icon>
+<p class="text-sm font-bold text-slate-700 uppercase">多功能文体中心</p>
+</div>
+</div>
+<!-- 停车场区域 -->
+<div class="absolute bottom-[10%] right-[10%] w-[35%] h-[35%] bg-slate-300 rounded-3xl border-2 border-dashed border-slate-400 flex flex-wrap gap-1 p-2">
+<div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+<iconify-icon class="text-6xl text-slate-600" icon="solar:parking-bold"></iconify-icon>
+</div>
+<!-- 模拟停车位 -->
+<div class="w-4 h-8 bg-red-400 rounded-sm"></div>
+<div class="w-4 h-8 bg-green-400 rounded-sm"></div>
+<div class="w-4 h-8 bg-green-400 rounded-sm"></div>
+<div class="w-4 h-8 bg-slate-200 rounded-sm"></div>
+<div class="w-4 h-8 bg-green-400 rounded-sm"></div>
+</div>
+<!-- 地图标点 - 实时告警 -->
+<div class="absolute top-[35%] right-[25%] marker-pulse z-30">
+<div class="flex flex-col items-center">
+<div class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full mb-1">异常烟雾告警</div>
+<iconify-icon class="text-3xl text-red-500" icon="solar:fire-bold"></iconify-icon>
+</div>
+</div>
+<!-- 地图标点 - POI -->
+<div class="absolute top-[45%] left-[45%] z-30">
+<iconify-icon class="text-2xl text-blue-600" icon="solar:map-point-hospital-bold"></iconify-icon>
+</div>
+<div class="absolute bottom-[40%] left-[20%] z-30">
+<iconify-icon class="text-2xl text-cyan-500" icon="solar:water-bold"></iconify-icon>
+</div>
+</div>
+</div>
+<!-- 右侧信息浮窗 -->
+<div class="absolute top-20 right-6 w-80 flex flex-col gap-4 z-20">
+<!-- 人流量趋势 -->
+<div class="bg-white/95 backdrop-blur-lg p-4 rounded-2xl shadow-xl border border-slate-200">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-sm">今日人流量趋势</h3>
+<iconify-icon class="text-blue-500" icon="solar:chart-line-duotone-bold"></iconify-icon>
+</div>
+<div class="h-32 w-full" id="flow-chart"></div>
+</div>
+<!-- 实时动态消息 -->
+<div class="bg-white/95 backdrop-blur-lg p-4 rounded-2xl shadow-xl border border-slate-200">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-sm">全园动态流</h3>
+<span class="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded uppercase">Live</span>
+</div>
+<div class="space-y-3">
+<div class="flex gap-3 items-start border-l-2 border-green-500 pl-3 py-1">
+<div class="text-[10px] font-mono text-slate-400">14:28</div>
+<div class="text-xs">
+<span class="font-semibold">北门闸机</span> 入园人数 125/分 (高峰)
+                                </div>
+</div>
+<div class="flex gap-3 items-start border-l-2 border-red-500 pl-3 py-1">
+<div class="text-[10px] font-mono text-slate-400">14:25</div>
+<div class="text-xs">
+<span class="font-semibold text-red-600">安防系统</span> 检测到主楼3F通道烟雾告警
+                                </div>
+</div>
+<div class="flex gap-3 items-start border-l-2 border-blue-500 pl-3 py-1">
+<div class="text-[10px] font-mono text-slate-400">14:15</div>
+<div class="text-xs">
+<span class="font-semibold">停车引导</span> P2地下库位已满，开启分流
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // 时间更新
+        function updateTime() {
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}年0${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            document.getElementById('current-time').innerText = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // ECharts 渲染
+        const flowChart = echarts.init(document.getElementById('flow-chart'));
+        flowChart.setOption({
+            grid: { left: 0, right: 0, top: 10, bottom: 0 },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
+                show: false
+            },
+            yAxis: { show: false },
+            series: [{
+                data: [1200, 2800, 3100, 2600, 3800, 4200],
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(59, 130, 246, 0.4)' },
+                        { offset: 1, color: 'rgba(59, 130, 246, 0.05)' }
+                    ])
+                },
+                lineStyle: { width: 2, color: '#3b82f6' }
+            }]
+        });
+
+        window.addEventListener('resize', () => flowChart.resize());
+    </script>
+</body>
+</html>

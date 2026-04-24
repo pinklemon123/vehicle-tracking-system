@@ -1,0 +1,623 @@
+/* ==================== 设施页面布局 ==================== */
+.facilities-page {
+    background: var(--bg-secondary);
+}
+
+.facilities-page .app-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #4096ff 100%);
+    border-bottom: none;
+}
+
+.facilities-page .app-header .header-title h1,
+.facilities-page .app-header .header-title .subtitle {
+    color: white;
+}
+
+.facilities-page .header-nav a {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.facilities-page .header-nav a:hover,
+.facilities-page .header-nav a.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 左侧边栏 */
+.facilities-sidebar {
+    width: 360px;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-light);
+}
+
+/* 分类标签 */
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-base);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.category-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-base);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.category-btn i {
+    font-size: var(--font-size-sm);
+}
+
+.category-btn:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.category-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* 统计摘要 */
+.stats-summary {
+    display: flex;
+    padding: var(--spacing-base);
+    gap: var(--spacing-base);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.stats-summary .stat-item {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+    display: block;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-value.success {
+    color: var(--success);
+}
+
+.stat-value.warning {
+    color: var(--warning);
+}
+
+/* 设施列表 */
+.facilities-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-base);
+}
+
+.facility-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-base);
+    margin-bottom: var(--spacing-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.facility-card:hover {
+    box-shadow: var(--shadow-base);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+}
+
+.facility-card.active {
+    border-color: var(--primary);
+    background: rgba(22, 119, 255, 0.04);
+}
+
+.facility-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.facility-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.facility-icon.toilet {
+    background: rgba(255, 77, 79, 0.1);
+    color: #ff4d4f;
+}
+
+.facility-icon.water {
+    background: rgba(22, 119, 255, 0.1);
+    color: #1677ff;
+}
+
+.facility-icon.elevator {
+    background: rgba(114, 46, 209, 0.1);
+    color: #722ed1;
+}
+
+.facility-icon.medical {
+    background: rgba(82, 196, 26, 0.1);
+    color: #52c41a;
+}
+
+.facility-icon.bike {
+    background: rgba(250, 173, 20, 0.1);
+    color: #faad14;
+}
+
+.facility-info {
+    flex: 1;
+}
+
+.facility-name {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.facility-location {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+.facility-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.facility-status.normal {
+    background: rgba(82, 196, 26, 0.1);
+    color: var(--success);
+}
+
+.facility-status.maintenance {
+    background: rgba(250, 173, 20, 0.1);
+    color: var(--warning);
+}
+
+.facility-status.closed {
+    background: rgba(255, 77, 79, 0.1);
+    color: var(--error);
+}
+
+.facility-details {
+    display: flex;
+    gap: var(--spacing-base);
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px dashed var(--border-light);
+}
+
+.detail-item {
+    flex: 1;
+}
+
+.detail-label {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+/* 地图区域 */
+.map-section {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-toolbar-top {
+    position: absolute;
+    top: var(--spacing-base);
+    left: var(--spacing-base);
+    right: var(--spacing-base);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.map-toolbar-top > * {
+    pointer-events: auto;
+}
+
+.floor-switcher {
+    display: flex;
+    gap: var(--spacing-xs);
+    background: var(--bg-primary);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-base);
+}
+
+.floor-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.floor-btn:hover {
+    background: var(--bg-secondary);
+}
+
+.floor-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.map-controls {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-base);
+    border: none;
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background: var(--bg-secondary);
+}
+
+/* 地图容器 */
+#mapContainer {
+    width: 100%;
+    height: 100%;
+}
+
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+}
+
+.legend-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-icon.toilet { background: #ff4d4f; }
+.legend-icon.water { background: #1677ff; }
+.legend-icon.elevator { background: #722ed1; }
+.legend-icon.medical { background: #52c41a; }
+.legend-icon.bike { background: #faad14; }
+
+/* 空气质量卡片 */
+.air-quality-card {
+    position: absolute;
+    top: 80px;
+    right: var(--spacing-base);
+    width: 200px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-base);
+    z-index: 100;
+}
+
+.air-quality-card h4 {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.quality-chart {
+    height: 60px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.quality-info {
+    text-align: center;
+    font-size: var(--font-size-xs);
+}
+
+.quality-info strong {
+    font-size: var(--font-size-lg);
+    color: var(--success);
+}
+
+/* 应急设备卡片 */
+.emergency-card {
+    position: absolute;
+    bottom: var(--spacing-base);
+    right: var(--spacing-base);
+    width: 260px;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-base);
+    z-index: 100;
+}
+
+.emergency-card h4 {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.device-list {
+    margin-bottom: var(--spacing-base);
+}
+
+.device-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xs) 0;
+    font-size: var(--font-size-xs);
+}
+
+.device-name i {
+    margin-right: var(--spacing-xs);
+    width: 16px;
+}
+
+.device-status.success {
+    color: var(--success);
+}
+
+.device-status.warning {
+    color: var(--warning);
+}
+
+
+
+.facility-marker.toilet { background: #ff4d4f; }
+.facility-marker.water { background: #1677ff; }
+.facility-marker.elevator { background: #722ed1; }
+.facility-marker.medical { background: #52c41a; }
+.facility-marker.bike { background: #faad14; }
+
+/* 设施信息窗口 */
+.facility-info-window {
+    padding: var(--spacing-sm);
+    min-width: 200px;
+}
+
+.facility-info-window h5 {
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.facility-info-window p {
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.facility-info-window .btn {
+    margin-top: var(--spacing-sm);
+    width: 100%;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .facilities-sidebar {
+        width: 300px;
+    }
+    
+    .air-quality-card,
+    .emergency-card {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .facilities-sidebar {
+        position: absolute;
+        left: 0;
+        top: 64px;
+        bottom: 0;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform var(--transition-base);
+    }
+    
+    .facilities-sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+/* 加载覆盖层 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    gap: var(--spacing-base);
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+/* 图片容器 */
+.image-container {
+    background: #e8ecf1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#imgWrapper {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform-origin: 0 0 !important;
+    transition: none !important;
+}
+
+#campusImage {
+    display: block !important;
+    max-width: none !important;
+    width: auto !important;
+    height: auto !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+}
+
+#markersLayer {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+}
+
+/* 设施标记 */
+.facility-marker {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    border: 2px solid white;
+    z-index: 10;
+    pointer-events: auto !important;
+    transition: transform 0.15s;
+}
+
+.facility-marker:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+    z-index: 20;
+}
+
+.facility-marker.selected {
+    transform: translate(-50%, -50%) scale(1.4);
+    z-index: 20;
+    box-shadow: 0 0 0 6px rgba(22, 119, 255, 0.3);
+    animation: pulse 1s infinite;
+}
+
+.facility-marker.editing {
+    animation: pulse 0.5s infinite;
+    box-shadow: 0 0 0 6px rgba(250, 173, 20, 0.4);
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(22, 119, 255, 0.3); }
+    50% { box-shadow: 0 0 0 10px rgba(22, 119, 255, 0.1); }
+}
+
+.facility-marker.toilet { background: #ff4d4f; }
+.facility-marker.water { background: #1677ff; }
+.facility-marker.elevator { background: #722ed1; }
+.facility-marker.medical { background: #52c41a; }
+.facility-marker.bike { background: #faad14; }
+.facility-marker.classroom { background: #eb6f20; }
+.facility-marker.office { background: #666666; }
+.facility-marker.shop { background: #13c2c2; }
+.facility-marker.stairs { background: #8c8c8c; }
+.facility-marker.exit { background: #f5222d; }
+
+/* 图例（水平） */
+.map-legend {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 14px;
+    z-index: 50;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+}
+
+.legend-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-icon.toilet { background: #ff4d4f; }
+.legend-icon.water { background: #1677ff; }
+.legend-icon.elevator { background: #722ed1; }
+.legend-icon.medical { background: #52c41a; }
+.legend-icon.bike { background: #faad14; }

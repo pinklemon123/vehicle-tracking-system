@@ -1,0 +1,527 @@
+/* 管理后台页面样式 */
+.admin-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 顶部导航 */
+.admin-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: var(--radius-base);
+    transition: all var(--transition-fast);
+}
+
+.back-link:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+}
+
+.header-left h1 {
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-search {
+    position: relative;
+    width: 400px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-full);
+    padding: 8px 18px;
+    border: 1px solid var(--border-light);
+}
+
+.search-wrapper i {
+    color: var(--text-tertiary);
+    margin-right: 10px;
+}
+
+.search-wrapper input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-results {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 200;
+}
+
+.search-result-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.search-result-item:hover {
+    background: var(--bg-secondary);
+}
+
+.search-result-name {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.search-result-address {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.coord-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* 左侧工具面板 */
+.admin-sidebar {
+    position: absolute;
+    top: 84px;
+    left: 20px;
+    bottom: 20px;
+    width: 340px;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    pointer-events: none;
+}
+
+.admin-sidebar > * {
+    pointer-events: auto;
+}
+
+.tool-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.tool-card.primary {
+    border: 2px solid var(--primary);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-light);
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.card-body {
+    padding: 18px;
+}
+
+.card-footer {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-light);
+}
+
+/* 模式切换 */
+.mode-switch {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all var(--transition-fast);
+}
+
+.mode-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* 操作按钮组 */
+.action-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-group .btn {
+    flex: 1;
+}
+
+/* 提示框 */
+.hint-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(250, 173, 20, 0.1);
+    border-radius: var(--radius-base);
+    border: 1px dashed var(--warning);
+    margin-top: 16px;
+    color: var(--warning);
+    font-size: 13px;
+}
+
+/* 信息网格 */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.info-item {
+    text-align: center;
+}
+
+.info-item .label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+}
+
+.info-item .value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.info-item .value.highlight {
+    color: var(--primary);
+}
+
+/* 车辆迷你列表 */
+.vehicle-mini-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.vehicle-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+}
+
+.vehicle-mini-item:last-child {
+    border-bottom: none;
+}
+
+.vehicle-mini-item:hover {
+    background: var(--bg-secondary);
+}
+
+.vehicle-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.vehicle-mini-info {
+    flex: 1;
+}
+
+.vehicle-mini-name {
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.vehicle-mini-detail {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+.vehicle-mini-status {
+    font-size: 11px;
+}
+
+.vehicle-mini-status.online {
+    color: var(--success);
+}
+
+.vehicle-mini-status.offline {
+    color: var(--error);
+}
+
+/* 地图控件 */
+.map-controls {
+    position: absolute;
+    bottom: 100px;
+    right: 24px;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.map-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.map-btn:hover {
+    background: white;
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+.map-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* 底部状态栏 */
+.admin-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.05);
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+}
+
+/* 底部地图控件 */
+.footer-map-controls {
+    display: flex;
+    gap: 12px;
+    background: var(--bg-secondary);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-light);
+}
+
+.map-ctrl-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    background: white;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+
+.map-ctrl-btn i {
+    font-size: 16px;
+}
+
+.map-ctrl-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.map-ctrl-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* 状态徽章 */
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.status-badge.online i {
+    color: var(--success);
+}
+
+/* 调整侧边栏宽度，给地图更多空间 */
+.admin-sidebar {
+    width: 310px;
+}
+
+/* 调整底部间距，给地图留空间 */
+.admin-sidebar {
+    bottom: 80px;
+}
+
+/* 地图容器 */
+#mapContainer {
+    width: 100%;
+    height: calc(100vh - 64px - 60px); /* 减去顶部和底部高度 */
+    position: absolute;
+    top: 64px;
+    left: 0;
+}
+
+/* 工具卡片文字缩小 */
+.card-header {
+    font-size: 14px;
+    padding: 12px 16px;
+}
+
+.card-body {
+    padding: 14px;
+}
+
+/* 模式按钮调整 */
+.mode-btn {
+    padding: 8px;
+    font-size: 12px;
+}
+
+/* 操作按钮组 */
+.action-group .btn {
+    font-size: 13px;
+    padding: 8px;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.status-badge.online i {
+    color: var(--success);
+}
+
+/* 坐标输入 */
+.coord-input {
+    display: flex;
+    gap: 8px;
+}
+
+.coord-input input {
+    flex: 1;
+}
+
+.hint-text {
+    display: block;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        width: 300px;
+    }
+}

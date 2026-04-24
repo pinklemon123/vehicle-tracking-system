@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>车辆定位可视化系统 - 高德地图</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* 控制面板 - 左上角 */
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 220px;
+            backdrop-filter: blur(5px);
+            border: 1px solid #e8e8e8;
+        }
+        .control-panel h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .vehicle-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f7fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid #1677ff;
+        }
+        .vehicle-item:hover {
+            background: #e6f4ff;
+            transform: translateX(3px);
+        }
+        .vehicle-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .vehicle-status {
+            font-size: 12px;
+            color: #52c41a;
+            margin-top: 4px;
+        }
+        
+        /* 信息面板 - 右上角 */
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border: 1px solid #e8e8e8;
+            text-align: right;
+        }
+        .info-panel .title {
+            font-size: 14px;
+            color: #666;
+        }
+        .info-panel .coordinate {
+            font-size: 13px;
+            color: #999;
+            margin-top: 5px;
+            font-family: monospace;
+        }
+        
+        /* 底部工具栏 */
+        .toolbar {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+        .toolbar button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #1677ff;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .toolbar button:hover {
+            background: #4096ff;
+            transform: scale(1.02);
+        }
+        .toolbar button.outline {
+            background: white;
+            color: #1677ff;
+            border-color: #1677ff;
+        }
+        .toolbar button.outline:hover {
+            background: #e6f4ff;
+        }
+
+        /* 自定义信息窗体样式 */
+        .amap-info-content {
+            padding: 8px 12px;
+        }
+        .nav-link {
+            color: #1677ff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+            display: inline-block;
+        }
+    </style>
+    
+    <!-- 安全密钥配置（必须） -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'dc6f2273e426185a9cc04b9b3eb61fb4',  // 注意：这里需要填写你截图中的"安全密钥"
+        }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+    
+    <!-- 左侧车辆列表 -->
+    <div class="control-panel">
+        <h3>🚛 车队管理 (共3辆)</h3>
+        <div class="vehicle-item" onclick="focusVehicle('vehicle1')">
+            <div class="vehicle-name">📦 货车 A · 京A12345</div>
+            <div class="vehicle-status">🟢 行驶中 · 45km/h · 北京朝阳</div>
+        </div>
+        <div class="vehicle-item" onclick="focusVehicle('vehicle2')">
+            <div class="vehicle-name">🚚 货车 B · 京B67890</div>
+            <div class="vehicle-status">🔵 停车 · 0km/h · 北京海淀</div>
+        </div>
+        <div class="vehicle-item" onclick="focusVehicle('vehicle3')">
+            <div class="vehicle-name">🚛 货车 C · 京C11223</div>
+            <div class="vehicle-status">🟡 离线 · 最后位置 2小时前</div>
+        </div>
+        <hr style="border:none;border-top:1px solid #eee;margin:15px 0 5px;">
+        <div style="font-size:12px;color:#999;text-align:center;">
+            Key: dc6f22******fb4
+        </div>
+    </div>
+    
+    <!-- 右侧坐标信息 -->
+    <div class="info-panel">
+        <div class="title">📍 当前中心点</div>
+        <div class="coordinate" id="coordDisplay">116.397428, 39.90923</div>
+        <div style="margin-top:12px;">
+            <button onclick="routeToCenter()" style="padding:6px 15px;background:#1677ff;color:white;border:none;border-radius:4px;cursor:pointer;">
+                🧭 导航到这里
+            </button>
+        </div>
+    </div>
+    
+    <!-- 底部工具条 -->
+    <div class="toolbar">
+        <button onclick="locateUser()">📍 我的位置</button>
+        <button class="outline" onclick="toggleTraffic()">🚦 路况</button>
+        <button class="outline" onclick="toggleSatellite()">🛰️ 卫星</button>
+        <button onclick="addRandomMarker()">📌 添加标记</button>
+    </div>
+
+    <!-- 引入高德官方 JS API (2.0版本) -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=dc6f2273e426185a9cc04b9b3eb61fb4&plugin=AMap.ToolBar,AMap.Scale,AMap.Geolocation,AMap.Driving"></script>
+    
+    <script>
+        // 全局变量
+        var map;
+        var trafficLayer;
+        var satelliteLayer;
+        var markers = [];
+        var vehiclePositions = {
+            vehicle1: [116.397428, 39.90923],  // 北京天安门附近
+            vehicle2: [116.310316, 39.983424], // 中关村
+            vehicle3: [116.481028, 39.989643]  // 望京
+        };
+        
+        // 初始化地图
+        function initMap() {
+            map = new AMap.Map('container', {
+                zoom: 12,
+                center: [116.397428, 39.90923],  // 北京中心
+                viewMode: '3D',                   // 3D视图
+                pitch: 45,                        // 倾斜角度
+                mapStyle: 'amap://styles/normal'  // 标准样式
+            });
+            
+            // 添加控件
+            map.addControl(new AMap.ToolBar({ position: 'LT' }));   // 工具条
+            map.addControl(new AMap.Scale({ position: 'LB' }));     // 比例尺
+            
+            // 添加车辆标记
+            addVehicleMarkers();
+            
+            // 监听地图移动，更新坐标显示
+            map.on('moveend', function() {
+                var center = map.getCenter();
+                document.getElementById('coordDisplay').innerText = 
+                    center.lng.toFixed(6) + ', ' + center.lat.toFixed(6);
+            });
+            
+            // 点击地图获取坐标并询问是否导航
+            map.on('click', function(e) {
+                var lnglat = e.lnglat;
+                var content = `
+                    <div class="amap-info-content">
+                        <b>选中位置</b><br>
+                        经度: ${lnglat.lng.toFixed(6)}<br>
+                        纬度: ${lnglat.lat.toFixed(6)}<br>
+                        <a class="nav-link" onclick="navigateTo(${lnglat.lng}, ${lnglat.lat}, '自定义位置')">
+                            🚗 导航到这里
+                        </a>
+                    </div>
+                `;
+                
+                var infoWindow = new AMap.InfoWindow({
+                    content: content,
+                    offset: new AMap.Pixel(0, -30)
+                });
+                
+                infoWindow.open(map, lnglat);
+            });
+            
+            console.log('✅ 高德地图初始化成功！');
+        }
+        
+        // 添加车辆标记点
+        function addVehicleMarkers() {
+            // 车辆1
+            var marker1 = new AMap.Marker({
+                position: vehiclePositions.vehicle1,
+                icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+                title: '货车 A · 京A12345',
+                label: {
+                    content: '🚛 A',
+                    direction: 'top'
+                }
+            });
+            
+            // 车辆2
+            var marker2 = new AMap.Marker({
+                position: vehiclePositions.vehicle2,
+                icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-blue.png',
+                title: '货车 B · 京B67890',
+                label: {
+                    content: '🚚 B',
+                    direction: 'top'
+                }
+            });
+            
+            // 车辆3（离线，灰色）
+            var marker3 = new AMap.Marker({
+                position: vehiclePositions.vehicle3,
+                icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+                title: '货车 C · 京C11223 (离线)',
+                label: {
+                    content: '🚛 C',
+                    direction: 'top'
+                }
+            });
+            
+            map.add([marker1, marker2, marker3]);
+            markers = [marker1, marker2, marker3];
+            
+            // 为每个标记添加信息窗
+            markers.forEach(function(marker, index) {
+                var vehicleNames = ['货车A 京A12345', '货车B 京B67890', '货车C 京C11223'];
+                var statusText = ['🟢 行驶中 45km/h', '🔵 停车', '🟡 离线'];
+                
+                marker.on('click', function(e) {
+                    var pos = e.target.getPosition();
+                    var content = `
+                        <div class="amap-info-content">
+                            <b>${vehicleNames[index]}</b><br>
+                            状态: ${statusText[index]}<br>
+                            坐标: ${pos.lng.toFixed(6)}, ${pos.lat.toFixed(6)}<br>
+                            <a class="nav-link" onclick="navigateTo(${pos.lng}, ${pos.lat}, '${vehicleNames[index]}')">
+                                🧭 规划路线前往
+                            </a>
+                        </div>
+                    `;
+                    
+                    var infoWindow = new AMap.InfoWindow({
+                        content: content,
+                        offset: new AMap.Pixel(0, -35)
+                    });
+                    
+                    infoWindow.open(map, pos);
+                });
+            });
+        }
+        
+        // 聚焦到指定车辆
+        function focusVehicle(vehicleId) {
+            var pos = vehiclePositions[vehicleId];
+            if (pos) {
+                map.setZoomAndCenter(15, pos);
+                
+                // 添加闪烁效果
+                var marker = markers[Object.keys(vehiclePositions).indexOf(vehicleId)];
+                if (marker) {
+                    marker.setAnimation('AMAP_ANIMATION_DROP');
+                }
+            }
+        }
+        
+        // 导航到指定坐标
+        function navigateTo(lng, lat, name) {
+            var url = `https://uri.amap.com/navigation?to=${lng},${lat},${encodeURIComponent(name)}&mode=car&callnative=1`;
+            window.open(url, '_blank');
+        }
+        
+        // 导航到地图中心点
+        function routeToCenter() {
+            var center = map.getCenter();
+            navigateTo(center.lng, center.lat, '目标地点');
+        }
+        
+        // 定位用户位置
+        function locateUser() {
+            AMap.plugin('AMap.Geolocation', function() {
+                var geolocation = new AMap.Geolocation({
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    buttonPosition: 'RB',
+                    buttonOffset: new AMap.Pixel(10, 20),
+                    zoomToAccuracy: true
+                });
+                
+                map.addControl(geolocation);
+                geolocation.getCurrentPosition(function(status, result) {
+                    if (status === 'complete') {
+                        var position = result.position;
+                        map.setCenter(position);
+                        
+                        // 添加用户位置标记
+                        new AMap.Marker({
+                            position: position,
+                            icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+                            title: '我的位置'
+                        }).setMap(map);
+                        
+                        AMap.InfoWindow({
+                            content: '📍 您当前的位置',
+                            position: position
+                        }).open(map);
+                    } else {
+                        alert('定位失败: ' + result.message);
+                    }
+                });
+            });
+        }
+        
+        // 切换实时路况
+        function toggleTraffic() {
+            if (!trafficLayer) {
+                trafficLayer = new AMap.TileLayer.Traffic({
+                    zIndex: 10,
+                    autoRefresh: true,
+                    interval: 180
+                });
+            }
+            
+            if (trafficLayer.getMap()) {
+                trafficLayer.setMap(null);
+                event.target.style.background = 'white';
+                event.target.style.color = '#1677ff';
+            } else {
+                trafficLayer.setMap(map);
+                event.target.style.background = '#1677ff';
+                event.target.style.color = 'white';
+            }
+        }
+        
+        // 切换卫星图
+        function toggleSatellite() {
+            if (!satelliteLayer) {
+                satelliteLayer = new AMap.TileLayer.Satellite();
+            }
+            
+            if (satelliteLayer.getMap()) {
+                satelliteLayer.setMap(null);
+                event.target.style.background = 'white';
+                event.target.style.color = '#1677ff';
+            } else {
+                satelliteLayer.setMap(map);
+                event.target.style.background = '#1677ff';
+                event.target.style.color = 'white';
+            }
+        }
+        
+        // 添加随机标记（演示用）
+        function addRandomMarker() {
+            var center = map.getCenter();
+            var randomOffset = 0.02;
+            var randomLng = center.lng + (Math.random() - 0.5) * randomOffset;
+            var randomLat = center.lat + (Math.random() - 0.5) * randomOffset;
+            
+            var marker = new AMap.Marker({
+                position: [randomLng, randomLat],
+                title: '临时标记点'
+            });
+            
+            map.add(marker);
+            map.setCenter([randomLng, randomLat]);
+            
+            AMap.InfoWindow({
+                content: '📌 新标记点<br><a class="nav-link" onclick="navigateTo(' + randomLng + ', ' + randomLat + ', \'临时点\')">导航</a>',
+                position: [randomLng, randomLat]
+            }).open(map);
+        }
+        
+        // 页面加载完成后初始化
+        window.onload = function() {
+            initMap();
+        };
+    </script>
+</body>
+</html>

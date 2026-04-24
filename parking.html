@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>智慧停车与反向寻车 - 2026可视化系统</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.5.4.3.js"></script>
+<style>
+        .parking-spot { transition: all 0.3s ease; }
+        .parking-spot.occupied { background-color: #fee2e2; border-color: #ef4444; color: #ef4444; }
+        .parking-spot.free { background-color: #f0fdf4; border-color: #22c55e; color: #16a34a; cursor: pointer; }
+        .parking-spot.highlight { background-color: #eff6ff; border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); transform: scale(1.1); z-index: 10; }
+        .sidebar-active { background: #eff6ff; border-right: 4px solid #3b82f6; color: #1d4ed8; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 overflow-hidden h-screen flex flex-col">
+<!-- 顶部导航栏 -->
+<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-50">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
+<iconify-icon class="text-white text-2xl" icon="solar:parking-bold-duotone"></iconify-icon>
+</div>
+<div>
+<h1 class="font-bold text-lg tracking-tight">智慧园区综合管理平台</h1>
+<p class="text-xs text-slate-400 uppercase tracking-widest">Smart Parking System</p>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-1">
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="index.html">态势感知</a>
+<a class="px-4 py-2 rounded-md font-medium text-blue-600 bg-blue-50" href="parking.html">智慧停车</a>
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="facilities.html">公共设施</a>
+<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="#">应急联动</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block">
+<div class="text-sm font-semibold">2026年04月23日</div>
+<div class="text-xs text-slate-400 text-right">园区停车实时监控</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300 ml-6">
+<img alt="User" src="https://modao.cc/agent-py/media/generated_images/2026-04-23/75e8608342ab439794accfed0a2e78b1.jpg"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- 左侧功能区 -->
+<aside class="w-80 bg-white border-r border-slate-200 flex flex-col shrink-0">
+<div class="p-6">
+<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+<iconify-icon class="text-blue-500" icon="solar:magnifer-zoom-in-bold-duotone"></iconify-icon>
+                    反向寻车
+                </h2>
+<div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+<label class="text-xs font-bold text-slate-400 uppercase block mb-2">输入车牌号码</label>
+<div class="flex gap-2">
+<input class="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="car-search-input" placeholder="粤B 88888" type="text"/>
+<button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="searchCar()">
+<iconify-icon icon="solar:magnifer-linear"></iconify-icon>
+</button>
+</div>
+<p class="text-[10px] text-slate-400 mt-2">支持模糊查询，如 "888"</p>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-slate-100 pb-2">
+<span class="text-sm text-slate-500">总车位数</span>
+<span class="text-xl font-bold font-mono">1,500</span>
+</div>
+<div class="flex justify-between items-end border-b border-slate-100 pb-2">
+<span class="text-sm text-slate-500">剩余车位</span>
+<span class="text-xl font-bold font-mono text-green-600">243</span>
+</div>
+<div class="flex justify-between items-end border-b border-slate-100 pb-2">
+<span class="text-sm text-slate-500">今日周转率</span>
+<span class="text-xl font-bold font-mono text-blue-600">4.82</span>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-6">
+<h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">最近入场</h3>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">粤B·92J31</div>
+<div class="flex-1">
+<div class="text-xs font-bold">14:28 入场</div>
+<div class="text-[10px] text-slate-400">P2地下库 A-042</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">苏A·E8812</div>
+<div class="flex-1">
+<div class="text-xs font-bold">14:25 入场</div>
+<div class="text-[10px] text-slate-400">P1地面库 B-105</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">京A·9981K</div>
+<div class="flex-1">
+<div class="text-xs font-bold">14:12 入场</div>
+<div class="text-[10px] text-slate-400">P2地下库 C-012</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="h-32 w-full" id="parking-trend"></div>
+</div>
+</aside>
+<!-- 地图主区 -->
+<div class="flex-1 p-8 overflow-hidden flex flex-col gap-6">
+<!-- 楼层选择 -->
+<div class="flex items-center justify-between">
+<div class="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200">
+<button class="px-6 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white">B1 地下库</button>
+<button class="px-6 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50">B2 地下库</button>
+<button class="px-6 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50">L1 地面库</button>
+</div>
+<div class="flex items-center gap-4 text-xs font-medium">
+<div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-red-400"></span> 已占用</div>
+<div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-green-400"></span> 空闲</div>
+<div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-blue-400"></span> 充电桩</div>
+<div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-orange-400"></span> 无障碍</div>
+</div>
+</div>
+<!-- 车位平面图 -->
+<div class="flex-1 bg-white rounded-3xl shadow-xl border border-slate-200 p-8 overflow-auto flex items-center justify-center relative">
+<div class="grid grid-cols-12 gap-4 w-[1200px]">
+<!-- A区 -->
+<div class="col-span-12 mb-4 flex items-center gap-4">
+<div class="h-px bg-slate-200 flex-1"></div>
+<span class="text-xs font-bold text-slate-400">停车场 A区 (主要通道)</span>
+<div class="h-px bg-slate-200 flex-1"></div>
+</div>
+<!-- 循环生成车位模拟 -->
+<script>
+                        const container = document.currentScript.parentElement;
+                        for(let i=1; i<=36; i++) {
+                            const isOccupied = Math.random() > 0.4;
+                            const isEV = i % 8 === 0;
+                            const isDisabled = i === 1 || i === 2;
+                            let colorClass = isOccupied ? 'occupied' : 'free';
+                            if (isEV) colorClass += ' ring-2 ring-blue-400 ring-offset-1';
+                            if (isDisabled) colorClass += ' ring-2 ring-orange-400 ring-offset-1';
+                            
+                            const spot = document.createElement('div');
+                            spot.id = `spot-${i}`;
+                            spot.className = `parking-spot ${colorClass} h-16 rounded-md border-2 flex flex-col items-center justify-center text-[10px] font-bold`;
+                            spot.innerHTML = `
+                                <span>A-${i.toString().padStart(3, '0')}</span>
+                                ${isOccupied ? '<iconify-icon icon="solar:car-bold"></iconify-icon>' : ''}
+                                ${isEV ? '<iconify-icon icon="solar:bolt-bold" class="text-blue-500"></iconify-icon>' : ''}
+                            `;
+                            container.appendChild(spot);
+                        }
+                    </script>
+<!-- B区 -->
+<div class="col-span-12 my-8 h-12 bg-slate-100 rounded-full flex items-center justify-center border-y-4 border-dashed border-slate-200">
+<span class="text-xs font-bold text-slate-400 tracking-[1em]">行车主干道 - 请勿停车</span>
+</div>
+<script>
+                        const container2 = document.currentScript.parentElement;
+                        for(let i=37; i<=72; i++) {
+                            const isOccupied = Math.random() > 0.7;
+                            let colorClass = isOccupied ? 'occupied' : 'free';
+                            const spot = document.createElement('div');
+                            spot.id = `spot-${i}`;
+                            spot.className = `parking-spot ${colorClass} h-16 rounded-md border-2 flex flex-col items-center justify-center text-[10px] font-bold`;
+                            spot.innerHTML = `<span>B-${i.toString().padStart(3, '0')}</span> ${isOccupied ? '<iconify-icon icon="solar:car-bold"></iconify-icon>' : ''}`;
+                            container2.appendChild(spot);
+                        }
+                    </script>
+</div>
+<!-- 结果浮层 -->
+<div class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-2xl shadow-2xl border border-blue-500 z-50 text-center w-64 animate-bounce" id="result-overlay">
+<iconify-icon class="text-5xl text-blue-500 mb-2" icon="solar:check-circle-bold"></iconify-icon>
+<h4 class="font-bold text-lg mb-1">查询成功!</h4>
+<p class="text-sm text-slate-500 mb-4">目标车辆位于：<span class="text-blue-600 font-bold">A-042</span> 车位</p>
+<button class="text-xs font-bold text-slate-400" onclick="hideResult()">关闭</button>
+</div>
+</div>
+<!-- 操作浮窗 -->
+<div class="bg-white p-4 rounded-2xl shadow-lg border border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-bold uppercase">当前环境监控</span>
+<div class="flex items-center gap-4 mt-1">
+<span class="flex items-center gap-1 text-xs font-medium"><iconify-icon class="text-orange-500" icon="solar:temperature-bold"></iconify-icon> 22°C</span>
+<span class="flex items-center gap-1 text-xs font-medium"><iconify-icon class="text-green-500" icon="solar:leaf-bold"></iconify-icon> CO浓度: 正常</span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold transition-colors">导出数据报表</button>
+<button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">库位智能调优</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function searchCar() {
+            const input = document.getElementById('car-search-input').value;
+            if(!input) return;
+            
+            // 模拟定位到 A-042
+            const targetId = 'spot-22';
+            const target = document.getElementById(targetId);
+            
+            // 重置所有
+            document.querySelectorAll('.parking-spot').forEach(s => s.classList.remove('highlight'));
+            
+            // 高亮目标
+            target.classList.add('highlight');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // 显示浮窗
+            document.getElementById('result-overlay').classList.remove('hidden');
+        }
+
+        function hideResult() {
+            document.getElementById('result-overlay').classList.add('hidden');
+        }
+
+        // 趋势图
+        const trendChart = echarts.init(document.getElementById('parking-trend'));
+        trendChart.setOption({
+            grid: { left: 0, right: 0, top: 10, bottom: 0 },
+            xAxis: { type: 'category', data: ['0-4', '4-8', '8-12', '12-16', '16-20', '20-24'], show: false },
+            yAxis: { show: false },
+            series: [{
+                data: [10, 40, 85, 95, 70, 30],
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: '#3b82f6' },
+                        { offset: 1, color: '#93c5fd' }
+                    ]),
+                    borderRadius: [4, 4, 0, 0]
+                }
+            }]
+        });
+        window.addEventListener('resize', () => trendChart.resize());
+    </script>
+</body>
+</html>

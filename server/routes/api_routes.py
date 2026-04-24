@@ -1,0 +1,58 @@
+"""
+统一API路由
+"""
+
+from flask import jsonify, request
+from server.utils.helpers import json_response
+
+
+def register_api_routes(app, services):
+    """注册API路由"""
+    
+    vehicle_service = services.get('vehicle_service')
+    fence_service = services.get('fence_service')
+    alarm_service = services.get('alarm_service')
+    
+    @app.route('/api/status', methods=['GET'])
+    def get_status():
+        """获取系统状态"""
+        return jsonify(json_response(data={
+            'status': 'running',
+            'version': '2.0.0',
+            'vehicles_count': vehicle_service.count(),
+            'fence_active': fence_service.is_valid(),
+            'alarms_count': alarm_service.count()
+        }))
+    
+    @app.route('/api/statistics', methods=['GET'])
+    def get_statistics():
+        """获取统计信息"""
+        stats = vehicle_service.get_statistics()
+        stats['fence_active'] = fence_service.is_valid()
+        stats['alarms_total'] = alarm_service.count()
+        stats['alarms_unacknowledged'] = len(alarm_service.get_unacknowledged())
+        
+        return jsonify(json_response(data=stats))
+    
+    @app.route('/api/alarms', methods=['GET'])
+    def get_alarms():
+        """获取报警列表"""
+        limit = request.args.get('limit', 50, type=int)
+        alarms = alarm_service.get_all(limit)
+        return jsonify(json_response(
+            data=[a.to_dict() for a in alarms],
+            message=f'共 {len(alarms)} 条报警'
+        ))
+    
+    @app.route('/api/alarms/<alarm_id>/acknowledge', methods=['PUT'])
+    def acknowledge_alarm(alarm_id):
+        """确认报警"""
+        if alarm_service.acknowledge(alarm_id):
+            return jsonify(json_response(message='报警已确认'))
+        return jsonify(json_response(code=404, message='报警不存在')), 404
+    
+    @app.route('/api/alarms/acknowledge-all', methods=['PUT'])
+    def acknowledge_all_alarms():
+        """确认所有报警"""
+        alarm_service.acknowledge_all()
+        return jsonify(json_response(message='所有报警已确认'))
