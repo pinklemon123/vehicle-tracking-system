@@ -96,6 +96,13 @@ def main():
     
     # 注册路由
     register_all_routes(app, services)
+
+    # 如有 operator 专用路由（基于 MockDataService），尝试注册其蓝图，向后兼容旧结构
+    try:
+        from server.routes.operator_routes import operator_bp
+        app.register_blueprint(operator_bp)
+    except Exception as e:
+        print(f"[WARN] operator_routes 未注册: {e}")
     
     # 初始化Socket处理
     socket_handlers = SocketHandlers(socketio, services)

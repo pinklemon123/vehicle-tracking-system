@@ -8,6 +8,26 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
+
+def load_local_env():
+    env_path = os.path.join(ROOT_DIR, '.env')
+    if not os.path.exists(env_path):
+        return
+
+    with open(env_path, 'r', encoding='utf-8') as env_file:
+        for line in env_file:
+            line = line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+
+            key, value = line.split('=', 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            os.environ.setdefault(key, value)
+
+
+load_local_env()
+
 # Flask配置
 class Config:
     SECRET_KEY = 'vehicle-tracking-secret-key-2024'
@@ -20,7 +40,7 @@ class Config:
     # 使用 DeepSeek 官方 base URL（OpenAI 兼容），具体调用路径将在 ai_service 中拼接
     DEEPSEEK_API_URL = os.environ.get('DEEPSEEK_API_URL', 'https://api.deepseek.com')
     # 默认模型，若需要可在环境变量中覆盖
-    DEEPSEEK_MODEL = os.environ.get('DEEPSEEK_MODEL', 'deepseek-v4-flash')
+    DEEPSEEK_MODEL = os.environ.get('DEEPSEEK_MODEL', 'deepseek-chat')
     
 # 地图配置
 MAP_CONFIG = {

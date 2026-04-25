@@ -1,388 +1,154 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>智慧停车与反向寻车 - 2026可视化系统</title>
-<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
-<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
-<script src="https://modao.cc/agent-py/static/source/js/echarts.min.5.4.3.js"></script>
-<style>
-        .parking-spot { transition: all 0.3s ease; }
-        .parking-spot.occupied { background-color: #fee2e2; border-color: #ef4444; color: #ef4444; }
-        .parking-spot.free { background-color: #f0fdf4; border-color: #22c55e; color: #16a34a; cursor: pointer; }
-        .parking-spot.highlight { background-color: #eff6ff; border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); transform: scale(1.1); z-index: 10; }
-        .sidebar-active { background: #eff6ff; border-right: 4px solid #3b82f6; color: #1d4ed8; }
-    /* 聊天消息内部可滚动，防止单条消息撑开整个聊天窗口 */
-    .message-content { max-height: 360px; overflow: auto; white-space: pre-wrap; padding: 6px 8px; }
-    .message-content::-webkit-scrollbar { height: 8px; width: 8px; }
-    .message-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运营总览 - 智慧园区综合管理平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="css/pages/operator.css">
 </head>
-<body class="bg-slate-50 font-sans text-slate-900 overflow-auto min-h-screen flex flex-col">
-<!-- 顶部导航栏 -->
-<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0 z-50">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
-<iconify-icon class="text-white text-2xl" icon="solar:parking-bold-duotone"></iconify-icon>
-</div>
-<div>
-<h1 class="font-bold text-lg tracking-tight">智慧园区综合管理平台</h1>
-<p class="text-xs text-slate-400 uppercase tracking-widest">Smart Parking System</p>
-</div>
-</div>
-<nav class="hidden md:flex items-center gap-1">
-<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="index.html">态势感知</a>
-<a class="px-4 py-2 rounded-md font-medium text-blue-600 bg-blue-50" href="parking.html">智慧停车</a>
-<a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="facilities.html">公共设施</a>
-    <a class="px-4 py-2 rounded-md font-medium text-slate-500 hover:bg-slate-100" href="operator.html">运营总览</a>
-</nav>
-<div class="flex items-center gap-6">
-<div class="text-right hidden sm:block">
-<div class="text-sm font-semibold">2026年04月23日</div>
-<div class="text-xs text-slate-400 text-right">园区停车实时监控</div>
-</div>
-<div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300 ml-6">
-<img alt="User" src="https://modao.cc/agent-py/media/generated_images/2026-04-23/75e8608342ab439794accfed0a2e78b1.jpg"/>
-</div>
-</div>
-</header>
-<main class="flex-1 flex">
-<!-- 左侧仍保留统计区 -->
-<aside class="w-80 bg-white border-r border-slate-200 flex flex-col shrink-0">
-<div class="p-6">
-<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-<iconify-icon class="text-blue-500" icon="solar:magnifer-zoom-in-bold-duotone"></iconify-icon>
-                    反向寻车
-                </h2>
-<div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
-<label class="text-xs font-bold text-slate-400 uppercase block mb-2">输入车牌号码</label>
-<div class="flex gap-2">
-<input class="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="car-search-input" placeholder="粤B 88888" type="text"/>
-<button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="searchCar()">
-<iconify-icon icon="solar:magnifer-linear"></iconify-icon>
-</button>
-</div>
-<p class="text-[10px] text-slate-400 mt-2">支持模糊查询，如 "888"</p>
-</div>
-<div class="space-y-4">
-<div class="flex justify-between items-end border-b border-slate-100 pb-2">
-<span class="text-sm text-slate-500">总车位数</span>
-<span class="text-xl font-bold font-mono">1,500</span>
-</div>
-<div class="flex justify-between items-end border-b border-slate-100 pb-2">
-<span class="text-sm text-slate-500">剩余车位</span>
-<span class="text-xl font-bold font-mono text-green-600">243</span>
-</div>
-<div class="flex justify-between items-end border-b border-slate-100 pb-2">
-<span class="text-sm text-slate-500">今日周转率</span>
-<span class="text-xl font-bold font-mono text-blue-600">4.82</span>
-</div>
-</div>
-</div>
-<div class="flex-1 overflow-y-auto px-6">
-<h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">最近入场</h3>
-<div class="space-y-3">
-<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">粤B·92J31</div>
-<div class="flex-1">
-<div class="text-xs font-bold">14:28 入场</div>
-<div class="text-[10px] text-slate-400">P2地下库 A-042</div>
-</div>
-</div>
-<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">苏A·E8812</div>
-<div class="flex-1">
-<div class="text-xs font-bold">14:25 入场</div>
-<div class="text-[10px] text-slate-400">P1地面库 B-105</div>
-</div>
-</div>
-<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-<div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-bold text-xs">京A·9981K</div>
-<div class="flex-1">
-<div class="text-xs font-bold">14:12 入场</div>
-<div class="text-[10px] text-slate-400">P2地下库 C-012</div>
-</div>
-</div>
-</div>
-</div>
-<div class="p-6">
-<div class="h-32 w-full" id="parking-trend"></div>
-</div>
-</aside>
-
-<!-- 主区：AI 对话界面 -->
-<div class="flex-1 p-8 overflow-hidden flex flex-col gap-6">
-    <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold">AI 助手 — 停车场智能对话与违规检测</h2>
-        <div class="text-sm text-slate-400">本页面不会在前端保存或暴露 API Key</div>
-    </div>
-
-    <div class="flex-1 bg-white rounded-3xl shadow-xl border border-slate-200 p-6 flex gap-6">
-        <!-- 聊天区 -->
-        <div class="flex-1 flex flex-col">
-            <div id="chat-box" class="space-y-3 pr-2 flex-1 p-4 bg-slate-50 rounded-lg">
-                <div class="text-xs text-slate-400">欢迎，您可以与 AI 对话，或点击“检测当前车位”让 AI 判断疑似违规停车。</div>
+<body class="bg-slate-50 font-sans text-slate-900">
+    <header class="h-16 bg-white border-b border-slate-200 fixed top-0 left-0 right-0 z-50">
+        <div class="flex items-center justify-between h-full px-6">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <iconify-icon icon="solar:map-point-wave-bold-duotone" class="text-white text-2xl"></iconify-icon>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg">智慧园区综合管理平台</h1>
+                    <div class="text-xs text-slate-400">运营总览 · 实时指挥中心</div>
+                </div>
             </div>
-            <div class="mt-4 flex gap-2">
-                <input id="chat-input" class="flex-1 px-3 py-2 border border-slate-200 rounded-lg" placeholder="输入问题，例如：有哪些车位可能违规？" />
-                <button id="send-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg">发送</button>
-                <button id="detect-btn" class="px-4 py-2 bg-orange-500 text-white rounded-lg">检测当前车位</button>
+            <nav class="hidden md:flex gap-2">
+                <a class="px-3 py-2 rounded-md text-slate-500 hover:bg-slate-100" href="index.html">态势感知</a>
+                <a class="px-3 py-2 rounded-md text-slate-500 hover:bg-slate-100" href="parking.html">智慧停车</a>
+                <a class="px-3 py-2 rounded-md text-slate-500 hover:bg-slate-100" href="facilities.html">公共设施</a>
+                <a class="px-3 py-2 rounded-md text-blue-600 bg-blue-50" href="operator.html">运营总览</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <div class="text-sm font-semibold" id="current-date"></div>
+                    <div class="text-xs text-slate-400">实时监控中</div>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+                    <img alt="avatar" src="https://modao.cc/agent-py/media/generated_images/2026-04-23/75e8608342ab439794accfed0a2e78b1.jpg">
+                </div>
             </div>
         </div>
+    </header>
 
-        <!-- 右侧小工具 -->
-        <div class="w-80 flex flex-col gap-4">
-            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
-                <div class="text-sm font-bold">快速操作</div>
-                <div class="text-xs text-slate-500 mt-2">- 点击“检测当前车位”将把页面上车位状态打包发送到后端 AI 检测接口。</div>
+    <main class="pt-20 p-6">
+        <section class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-4">
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-blue-500 stat-card">
+                <div class="text-xs text-slate-500">实时人数</div>
+                <div class="text-2xl font-bold" id="stat-people">-</div>
             </div>
-            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
-                <div class="text-sm font-bold">注意</div>
-                <div class="text-xs text-slate-500 mt-2">请将 Deepseek API Key 配置在服务端环境变量 `DEEPSEEK_API_KEY`，不要将秘钥直接写入页面。</div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-emerald-500 stat-card">
+                <div class="text-xs text-slate-500">车辆入园</div>
+                <div class="text-2xl font-bold" id="stat-vehicles">-</div>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-sm mt-4">
-              <h3 class="font-bold mb-2">技术细节</h3>
-              <pre id="debug-panel" class="text-xs bg-gray-100 p-3 rounded-lg overflow-auto max-h-96 whitespace-pre-wrap"></pre>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-red-500 stat-card">
+                <div class="text-xs text-slate-500">当前告警</div>
+                <div class="text-2xl font-bold text-red-600" id="stat-alarms">0</div>
             </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-green-500 stat-card">
+                <div class="text-xs text-slate-500">系统健康</div>
+                <div class="text-2xl font-bold text-green-600" id="stat-health">正常</div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3">
+            <div class="bg-white rounded-xl p-4 shadow-sm lg:col-span-2">
+                <h3 class="font-bold mb-3">关键指标趋势</h3>
+                <div id="main-chart" class="h-64"></div>
+                <div class="grid grid-cols-1 gap-3 mt-4 md:grid-cols-3">
+                    <div class="bg-slate-50 rounded-lg p-2">
+                        <div class="text-xs text-slate-500">车位利用率</div>
+                        <div id="chart-usage" class="h-20"></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2">
+                        <div class="text-xs text-slate-500">人流密度</div>
+                        <div id="chart-flow" class="h-20"></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2">
+                        <div class="text-xs text-slate-500">能耗趋势</div>
+                        <div id="chart-energy" class="h-20"></div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-bold">告警列表</h4>
+                    <button id="refresh-alarms" class="text-xs text-blue-600 hover:text-blue-700">刷新</button>
+                </div>
+                <div id="alarms-list" class="space-y-2 max-h-96 overflow-auto custom-scrollbar"></div>
+                <button id="ack-all-alarms" class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                    确认所有告警
+                </button>
+            </aside>
+        </section>
+
+        <section class="bg-white rounded-xl p-4 shadow-sm">
+            <h4 class="font-bold mb-3">运维控制</h4>
+            <div class="flex flex-wrap gap-3">
+                <button id="check-ai" class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm hover:bg-indigo-100 transition">检测 AI 连通</button>
+                <button id="run-ai-detect" class="px-4 py-2 bg-orange-50 text-orange-600 rounded-lg text-sm hover:bg-orange-100 transition">AI 检测停车位</button>
+                <button id="refresh-data" class="px-4 py-2 bg-slate-100 rounded-lg text-sm hover:bg-slate-200 transition">刷新所有数据</button>
+                <div id="operation-result" class="text-sm text-slate-500 ml-2 flex items-center"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="ai-dialog" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
+        <div class="w-11/12 md:w-2/3 lg:w-1/2 bg-white rounded-lg p-4 shadow-lg max-h-[80vh] overflow-hidden">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold">AI 停车位判定结果</h3>
+                <button id="ai-close" class="text-slate-500 hover:text-slate-700">关闭</button>
+            </div>
+            <div id="ai-results" class="overflow-auto custom-scrollbar space-y-3" style="max-height:65vh"></div>
         </div>
     </div>
-</div>
 
-</main>
+    <button
+        id="ai-chat-toggle"
+        class="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700"
+        title="AI 助手"
+        type="button">
+        <iconify-icon icon="solar:chat-round-dots-bold-duotone" class="text-3xl"></iconify-icon>
+    </button>
 
-<script>
-    // 前端不应保存或暴露 API Key。默认不允许前端直接直连 DeepSeek。
-    // 若确实需要前端直连，请确保您理解风险并在此手动改为 true（并配置 Key）。
-    const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-    const FRONTEND_DIRECT_DEEPSEEK = false;
+    <section
+        id="ai-chat-panel"
+        class="fixed bottom-24 right-6 z-40 hidden w-[min(420px,calc(100vw-32px))] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
+        <header class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div>
+                <h3 class="text-sm font-semibold">DeepSeek AI 助手</h3>
+                <p class="text-xs text-slate-400">停车与运营问题实时问答</p>
+            </div>
+            <button id="ai-chat-close" class="rounded p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-700" type="button">
+                <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+            </button>
+        </header>
+        <div id="ai-chat-messages" class="custom-scrollbar max-h-[420px] min-h-72 space-y-3 overflow-y-auto bg-slate-50 p-4">
+            <div class="max-w-[86%] rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                你好，我可以帮你分析停车告警、车位状态、运营指标，也可以生成处理建议。
+            </div>
+        </div>
+        <footer class="border-t border-slate-100 bg-white p-3">
+            <div class="flex gap-2">
+                <textarea
+                    id="ai-chat-input"
+                    class="max-h-28 min-h-10 flex-1 resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                    placeholder="输入问题，例如：当前停车风险有哪些？"
+                    rows="1"></textarea>
+                <button id="ai-chat-send" class="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700" type="button">发送</button>
+            </div>
+        </footer>
+    </section>
 
-    // 后端 base URL：当页面由 Live Server (127.0.0.1:5500) 提供时，使用本地 Flask 后端
-    const BACKEND_BASE = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port === '5500' ? 'http://localhost:5000' : '';
-
-    // 简单的本地“车位快照”生成器（页面内搜索 .parking-spot）
-    function captureParkingSnapshot() {
-        const spots = Array.from(document.querySelectorAll('.parking-spot'));
-        if (spots.length === 0) {
-            // 如果页面没有生成车位（旧页面），我们也可以生成一个模拟快照
-            const simulated = [];
-            for (let i=1;i<=36;i++) simulated.push({ spot_id: `A-${String(i).padStart(3,'0')}`, occupied: Math.random()>0.4 });
-            return { spots: simulated };
-        }
-
-        const snapshot = { spots: spots.map(s => ({
-            spot_id: s.id || s.querySelector('span')?.innerText || 'unknown',
-            occupied: s.classList.contains('occupied'),
-            classes: s.className
-        })) };
-        return snapshot;
-    }
-
-    function appendMessage(role, text) {
-                const win = document.getElementById('chat-box');
-                const el = document.createElement('div');
-                el.className = role === 'user' ? 'text-right' : 'text-left';
-                // 每条消息内部为可滚动区域，超长文本将在该区域内滚动
-                el.innerHTML = `
-                    <div class="inline-block p-0 rounded-lg ${role==='user'?'bg-blue-600 text-white':'bg-white text-slate-800 border border-slate-200'}">
-                        <div class="message-content ${role==='user'?'text-white':'text-slate-800'}">${text}</div>
-                    </div>`;
-        win.appendChild(el);
-                // 自动滚到底部
-                win.scrollTop = win.scrollHeight;
-    }
-
-        // 从 DeepSeek / OpenAI 样式响应中提取可读文本
-        function getAIText(wrapper) {
-                const data = wrapper?.data || wrapper;
-                // DeepSeek / OpenAI -> choices[0].message.content
-                if (data?.choices && data.choices.length > 0) {
-                        return data.choices[0].message?.content || data.choices[0].text || '';
-                }
-                // 有些代理直接返回 { content: '...' }
-                if (data?.content) return data.content;
-                if (typeof data === 'string') return data;
-                return '';
-        }
-
-        function showDebug(obj) {
-                const panel = document.getElementById('debug-panel');
-                if (!panel) return;
-                panel.textContent = JSON.stringify(obj, null, 2);
-        }
-
-        function formatViolationResult(result) {
-            let text = '';
-
-            if (!result || !result.violations || result.violations.length === 0) {
-                text += '✅ 未检测到明显违规停车行为。\n\n';
-            } else {
-                text += `⚠️ 检测到 ${result.violations.length} 个疑似违规车位：\n\n`;
-
-                result.violations.forEach((item, index) => {
-                    text += `${index + 1}. 车位：${item.spot_id || item.spot || '未知'}\n`;
-                    text += `   状态：${item.occupied ? '已占用' : '未占用'}\n`;
-                    if (item.reason) text += `   原因：${item.reason}\n`;
-                    text += '\n';
-                });
-            }
-
-            if (result && result.summary) {
-                text += `总结：${result.summary}`;
-            }
-
-            return text;
-        }
-
-    async function aiChatSend(message) {
-        appendMessage('user', message);
-        const system = { role: 'system', content: '你是停车场运维助手，回答要简洁，可处理停车违规检测、给出原因和置信度，返回自然语言文本。' };
-        const messages = [system, {role:'user', content: message}];
-
-        try {
-            // 如果前端被显式允许直连（不推荐），且页面配置了前端 KEY，则会尝试直连。
-            if (FRONTEND_DIRECT_DEEPSEEK && typeof DEEPSEEK_KEY !== 'undefined' && DEEPSEEK_KEY) {
-                const r = await fetch(DEEPSEEK_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + DEEPSEEK_KEY
-                    },
-                    body: JSON.stringify({ model: 'deepseek-chat', messages })
-                });
-                const text = await r.text();
-                if (!r.ok) {
-                    appendMessage('assistant', `直连失败：HTTP ${r.status} ${text}`);
-                    return;
-                }
-                try {
-                    const j = JSON.parse(text);
-                    appendMessage('assistant', JSON.stringify(j, null, 2));
-                } catch (e) {
-                    appendMessage('assistant', '直连返回非 JSON：' + text);
-                }
-                return;
-            }
-
-            // 否则回退到后端代理接口（推荐）
-            const payload = { messages };
-            const r = await fetch((BACKEND_BASE || '') + '/api/ai/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const j = await r.json();
-            const raw = j?.data || j || { error: '无响应' };
-            const aiText = getAIText(j);
-
-            // 尝试将可能是 JSON 字符串的 aiText 转为结构化显示
-            let display = aiText || 'AI 没有返回有效内容';
-            try {
-                const parsed = JSON.parse(aiText);
-                // 如果是违规检测结果，格式化显示
-                if (parsed && (parsed.violations || parsed.summary)) {
-                    display = formatViolationResult(parsed);
-                } else {
-                    display = typeof parsed === 'string' ? parsed : JSON.stringify(parsed, null, 2);
-                }
-            } catch (e) {
-                // 不是 JSON 字符串，直接显示 aiText
-                display = aiText;
-            }
-
-            appendMessage('assistant', display);
-            // 在技术细节面板显示请求与原始返回
-            showDebug({ request: payload, 'AI 原始返回': raw });
-        } catch (err) {
-            appendMessage('assistant', '请求出错：' + err.message);
-        }
-    }
-
-    async function detectCurrentParking() {
-        const snapshot = captureParkingSnapshot();
-        appendMessage('user', '请帮我检测以下车位快照是否存在违规停车（只给出简洁结果）:\n' + JSON.stringify(snapshot));
-        try {
-            // 优先使用前端 Key 直接调用 Deepseek 的 detect（通过 chat 请求结构化判断），仅在 FRONTEND_DIRECT_DEEPSEEK 为 true 时启用
-            if (FRONTEND_DIRECT_DEEPSEEK && typeof DEEPSEEK_KEY !== 'undefined' && DEEPSEEK_KEY) {
-                const system = {
-                    role: 'system',
-                    content: '你是一个停车场违规检测助手。接收车位快照，返回 JSON 格式的违规列表，格式：{"violations": [{"spot_id":"A-042","reason":"...","confidence":0.9}],"summary":"..." }'
-                };
-                const user = { role: 'user', content: '请仅以 JSON 格式返回违规检测结果：\n' + JSON.stringify(snapshot) };
-                const r = await fetch(DEEPSEEK_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + DEEPSEEK_KEY
-                    },
-                    body: JSON.stringify({ model: 'deepseek-chat', messages: [system, user], context: snapshot })
-                });
-                const text = await r.text();
-                if (!r.ok) {
-                    appendMessage('assistant', `直连失败：HTTP ${r.status} ${text}`);
-                    return;
-                }
-                try {
-                    const j = JSON.parse(text);
-                    appendMessage('assistant', JSON.stringify(j || { error: '无响应' }, null, 2));
-                } catch (e) {
-                    appendMessage('assistant', '直连返回非 JSON：' + text);
-                }
-                return;
-            }
-
-            // 回退到后端代理（推荐）
-            const payload = { parking_snapshot: snapshot };
-            const r = await fetch((BACKEND_BASE || '') + '/api/ai/detect_parking', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const j = await r.json();
-            const raw = j?.data || j || {};
-
-            // DeepSeek 的返回可能在 raw 或 raw.choices 中
-            let aiText = getAIText(j) || '';
-            let display = aiText;
-            // 如果 AI 返回的是 JSON 字符串，尝试解析并格式化违规结果
-            try {
-                const parsed = aiText ? JSON.parse(aiText) : raw;
-                display = formatViolationResult(parsed);
-                // 将完整原始返回也显示在调试面板
-                showDebug({ request: payload, 'AI 原始返回': raw });
-            } catch (e) {
-                // 否则尝试从 raw 直接读取结构化结果
-                if (raw && (raw.violations || raw.summary)) {
-                    display = formatViolationResult(raw);
-                    showDebug({ request: payload, 'AI 原始返回': raw });
-                } else {
-                    // 无法解析为结构化结果，显示原文并在调试面板输出原始
-                    display = aiText || JSON.stringify(raw, null, 2);
-                    showDebug({ request: payload, 'AI 原始返回': raw });
-                }
-            }
-
-            appendMessage('assistant', display);
-        } catch (err) {
-            appendMessage('assistant', '检测请求失败：' + err.message);
-        }
-    }
-
-    document.getElementById('send-btn').addEventListener('click', () => {
-        const v = document.getElementById('chat-input').value.trim();
-        if (!v) return;
-        aiChatSend(v);
-        document.getElementById('chat-input').value = '';
-    });
-    document.getElementById('detect-btn').addEventListener('click', detectCurrentParking);
-        // 回车发送（Enter 发送，Shift+Enter 换行）
-        document.getElementById('chat-input').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('send-btn').click();
-            }
-        });
-</script>
+    <script src="js/pages/parking.js"></script>
 </body>
 </html>

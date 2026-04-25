@@ -1,0 +1,166 @@
+/* 运营总览页面独立样式 */
+
+/* 自定义滚动条 */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 统计卡片悬浮效果 */
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* 告警项样式 */
+.alarm-item {
+    animation: slideIn 0.3s ease;
+    transition: all 0.2s ease;
+}
+
+.alarm-item:hover {
+    background-color: #fef2f2 !important;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 告警级别标签 */
+.alarm-critical {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-left: 3px solid #dc2626;
+}
+
+.alarm-warning {
+    background-color: #fed7aa;
+    color: #ea580c;
+    border-left: 3px solid #ea580c;
+}
+
+.alarm-info {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border-left: 3px solid #2563eb;
+}
+
+.alarm-acknowledged {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* 脉冲动画（用于新告警） */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.alarm-new {
+    animation: pulse 1s ease;
+}
+
+/* 图表容器适配 */
+.chart-container {
+    width: 100%;
+    height: 100%;
+}
+
+/* 加载状态 */
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 状态指示器 */
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot.online {
+    background-color: #22c55e;
+    box-shadow: 0 0 5px #22c55e;
+}
+
+.status-dot.warning {
+    background-color: #f59e0b;
+    box-shadow: 0 0 5px #f59e0b;
+}
+
+.status-dot.offline {
+    background-color: #ef4444;
+    box-shadow: 0 0 5px #ef4444;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .stat-card .text-2xl {
+        font-size: 1.25rem;
+    }
+    
+    .alarm-item {
+        font-size: 0.75rem;
+    }
+}
+
+/* 工具类 */
+.truncate-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-green {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.bg-gradient-orange {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}

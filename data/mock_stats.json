@@ -1,0 +1,1093 @@
+{
+  "current_stats": {
+    "people": 3161,
+    "vehicles": 1576,
+    "alarms": 12,
+    "health": "正常",
+    "utilization_rate": 0.81,
+    "avg_duration": 70,
+    "timestamp": "2026-04-25T15:00:11.108411"
+  },
+  "trends": [
+    {
+      "date": "04/19",
+      "people": 1889,
+      "vehicles": 685,
+      "alarms": 0,
+      "utilization": 0.75,
+      "energy": 2485
+    },
+    {
+      "date": "04/20",
+      "people": 1545,
+      "vehicles": 598,
+      "alarms": 5,
+      "utilization": 0.55,
+      "energy": 2215
+    },
+    {
+      "date": "04/21",
+      "people": 2088,
+      "vehicles": 374,
+      "alarms": 11,
+      "utilization": 0.52,
+      "energy": 2280
+    },
+    {
+      "date": "04/22",
+      "people": 2188,
+      "vehicles": 1012,
+      "alarms": 7,
+      "utilization": 0.61,
+      "energy": 2059
+    },
+    {
+      "date": "04/23",
+      "people": 1557,
+      "vehicles": 632,
+      "alarms": 13,
+      "utilization": 0.76,
+      "energy": 2095
+    },
+    {
+      "date": "04/24",
+      "people": 1532,
+      "vehicles": 594,
+      "alarms": 10,
+      "utilization": 0.55,
+      "energy": 1494
+    },
+    {
+      "date": "04/25",
+      "people": 960,
+      "vehicles": 529,
+      "alarms": 5,
+      "utilization": 0.61,
+      "energy": 1847
+    }
+  ],
+  "alarms": [
+    {
+      "id": 933,
+      "type": "道闸识别异常",
+      "location": "南门入口",
+      "time": "15:00",
+      "status": "unacknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 333,
+      "type": "道闸识别异常",
+      "location": "南门入口",
+      "time": "14:59",
+      "status": "unacknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 935,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "14:59",
+      "status": "unacknowledged",
+      "level": "info"
+    },
+    {
+      "id": 289,
+      "type": "车位传感器故障",
+      "location": "B区105车位",
+      "time": "14:59",
+      "status": "unacknowledged",
+      "level": "warning"
+    },
+    {
+      "id": 563,
+      "type": "道闸识别异常",
+      "location": "南门入口",
+      "time": "14:57",
+      "status": "unacknowledged",
+      "level": "info"
+    },
+    {
+      "id": 998,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "14:57",
+      "status": "unacknowledged",
+      "level": "warning"
+    },
+    {
+      "id": 336,
+      "type": "违规停车",
+      "location": "A区032车位",
+      "time": "14:57",
+      "status": "acknowledged",
+      "level": "info"
+    },
+    {
+      "id": 726,
+      "type": "车位传感器故障",
+      "location": "B区105车位",
+      "time": "14:54",
+      "status": "acknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 670,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "14:52",
+      "status": "acknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 337,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "14:51",
+      "status": "acknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 252,
+      "type": "违规停车",
+      "location": "A区032车位",
+      "time": "14:51",
+      "status": "acknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 969,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "14:51",
+      "status": "acknowledged",
+      "level": "warning"
+    },
+    {
+      "id": 378,
+      "type": "道闸识别异常",
+      "location": "南门入口",
+      "time": "14:50",
+      "status": "acknowledged",
+      "level": "critical"
+    },
+    {
+      "id": 1,
+      "type": "超时占用",
+      "location": "VIP-008车位",
+      "time": "13:20",
+      "status": "acknowledged",
+      "level": "info"
+    },
+    {
+      "id": 2,
+      "type": "道闸识别异常",
+      "location": "南门入口",
+      "time": "12:37",
+      "status": "acknowledged",
+      "level": "info"
+    }
+  ],
+  "parking_snapshot": [
+    {
+      "id": "P001",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P002",
+      "area": "D",
+      "occupied": false,
+      "plate": "粤B78826"
+    },
+    {
+      "id": "P003",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P004",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P005",
+      "area": "D",
+      "occupied": false,
+      "plate": "粤B85651"
+    },
+    {
+      "id": "P006",
+      "area": "A",
+      "occupied": false,
+      "plate": "粤B17063"
+    },
+    {
+      "id": "P007",
+      "area": "B",
+      "occupied": false,
+      "plate": "粤B67244"
+    },
+    {
+      "id": "P008",
+      "area": "D",
+      "occupied": false,
+      "plate": "粤B68535"
+    },
+    {
+      "id": "P009",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P010",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P011",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P012",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P013",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P014",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P015",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P016",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P017",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P018",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P019",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B25587"
+    },
+    {
+      "id": "P020",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P021",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P022",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P023",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P024",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P025",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P026",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P027",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P028",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P029",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P030",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P031",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P032",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P033",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B39450"
+    },
+    {
+      "id": "P034",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P035",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B40916"
+    },
+    {
+      "id": "P036",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B39665"
+    },
+    {
+      "id": "P037",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P038",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P039",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P040",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P041",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P042",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P043",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P044",
+      "area": "D",
+      "occupied": false,
+      "plate": "粤B37791"
+    },
+    {
+      "id": "P045",
+      "area": "C",
+      "occupied": false,
+      "plate": "粤B20537"
+    },
+    {
+      "id": "P046",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B63410"
+    },
+    {
+      "id": "P047",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B27124"
+    },
+    {
+      "id": "P048",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P049",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P050",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P051",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P052",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P053",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B22976"
+    },
+    {
+      "id": "P054",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B17132"
+    },
+    {
+      "id": "P055",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B65555"
+    },
+    {
+      "id": "P056",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B28869"
+    },
+    {
+      "id": "P057",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P058",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B94243"
+    },
+    {
+      "id": "P059",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P060",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P061",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P062",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P063",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B85423"
+    },
+    {
+      "id": "P064",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P065",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P066",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P067",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P068",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P069",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P070",
+      "area": "C",
+      "occupied": false,
+      "plate": "粤B83768"
+    },
+    {
+      "id": "P071",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B95515"
+    },
+    {
+      "id": "P072",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P073",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P074",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B29511"
+    },
+    {
+      "id": "P075",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P076",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P077",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B85397"
+    },
+    {
+      "id": "P078",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B36010"
+    },
+    {
+      "id": "P079",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P080",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P081",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P082",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P083",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P084",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P085",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P086",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P087",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B63391"
+    },
+    {
+      "id": "P088",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P089",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B27223"
+    },
+    {
+      "id": "P090",
+      "area": "A",
+      "occupied": false,
+      "plate": "粤B55814"
+    },
+    {
+      "id": "P091",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P092",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B42909"
+    },
+    {
+      "id": "P093",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P094",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P095",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P096",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P097",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P098",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B58520"
+    },
+    {
+      "id": "P099",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P100",
+      "area": "B",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P101",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P102",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P103",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P104",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P105",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B70083"
+    },
+    {
+      "id": "P106",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P107",
+      "area": "B",
+      "occupied": false,
+      "plate": "粤B86154"
+    },
+    {
+      "id": "P108",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P109",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P110",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P111",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P112",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B45133"
+    },
+    {
+      "id": "P113",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P114",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B32431"
+    },
+    {
+      "id": "P115",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P116",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P117",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B13349"
+    },
+    {
+      "id": "P118",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P119",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P120",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B19252"
+    },
+    {
+      "id": "P121",
+      "area": "C",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P122",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P123",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P124",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B54033"
+    },
+    {
+      "id": "P125",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P126",
+      "area": "A",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P127",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P128",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P129",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P130",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P131",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B65783"
+    },
+    {
+      "id": "P132",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P133",
+      "area": "B",
+      "occupied": true,
+      "plate": "粤B65035"
+    },
+    {
+      "id": "P134",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B52966"
+    },
+    {
+      "id": "P135",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P136",
+      "area": "C",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P137",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P138",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P139",
+      "area": "A",
+      "occupied": false,
+      "plate": "粤B83105"
+    },
+    {
+      "id": "P140",
+      "area": "A",
+      "occupied": true,
+      "plate": "粤B40485"
+    },
+    {
+      "id": "P141",
+      "area": "D",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P142",
+      "area": "B",
+      "occupied": false,
+      "plate": "粤B77792"
+    },
+    {
+      "id": "P143",
+      "area": "B",
+      "occupied": false,
+      "plate": "粤B33295"
+    },
+    {
+      "id": "P144",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B37233"
+    },
+    {
+      "id": "P145",
+      "area": "D",
+      "occupied": true,
+      "plate": "粤B18750"
+    },
+    {
+      "id": "P146",
+      "area": "B",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P147",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    },
+    {
+      "id": "P148",
+      "area": "A",
+      "occupied": false,
+      "plate": null
+    },
+    {
+      "id": "P149",
+      "area": "C",
+      "occupied": true,
+      "plate": "粤B91931"
+    },
+    {
+      "id": "P150",
+      "area": "D",
+      "occupied": true,
+      "plate": null
+    }
+  ]
+}
